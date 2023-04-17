@@ -1,12 +1,16 @@
 package com.example.demo.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.example.demo.model.ERole;
+import com.example.demo.model.Role;
 import com.example.demo.model.User;
 
+import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.request.LoginRequest;
 import com.example.demo.request.SignupRequest;
@@ -14,10 +18,12 @@ import com.example.demo.response.JwtResponse;
 import com.example.demo.utils.JwtUtils;
 import com.example.demo.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,6 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -37,6 +44,9 @@ public class AuthController {
     UserRepository userRepository;
 
     @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
     PasswordEncoder encoder;
 
     @Autowired
@@ -44,28 +54,30 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        try{
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(item -> item.getAuthority())
+                    .collect(Collectors.toList());
 
+            return ResponseEntity.ok(new JwtResponse(jwt,
+                    userDetails.getId(),
+                    userDetails.getUsername(),
+                    userDetails.getEmail(),
+                    userDetails.getPhoneNo(),
+                    roles));
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                userDetails.getPhoneNo(),
-                roles));
-//    }catch(AuthenticationException e){
-//        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password", e);
-//    }
+        }
+        catch(AuthenticationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password", e);
+        }
     }
 
     @PostMapping("/signup")
@@ -98,27 +110,32 @@ public class AuthController {
 //        UserDetailsImpl registerRequest;
 
 
+        /* Overall, this code is responsible for mapping the list of role names provided in the SignupRequest object
+        to a set of Role objects that can be assigned to the new User object. It does this by using the roleRepository
+        to find the Role objects with the correct names, and adding them to the set of roles for the new User object.
+         */
 
+//        List<ERole> strRoles = signUpRequest.getRoles();
+//        Set<Role> roles = new HashSet<>();
+//
 //        if (strRoles == null) {
-//            //TODO: ENUM Validation
+////            //TODO: ENUM Validation
+//        Role userRole = roleRepository.findByName(String.valueOf(ERole.ROLE_USER))
+//                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 //            roles.add(userRole);
 //        } else {
 //            strRoles.forEach(role -> {
-//                if (role.equals("admin")) {
-//                    Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-//                            .orElseGet(() -> roleRepository.findByName(ERole.ROLE_USER)
-//                                    .orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
-//                    roles.add(adminRole);
+//                switch (role) {
+//                    case ROLE_ADMIN:
+//                        Role adminRole = roleRepository.findByName(String.valueOf(ERole.ROLE_ADMIN))
+//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//                        roles.add(adminRole);
+//                        break;
 //
-////                    case "provider":
-////                        Role serviceProviderRole = roleRepository.findByName(String.valueOf(ERole.ROLE_SERVICE_PROVIDER))
-////                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-////                        roles.add(serviceProviderRole);
-////                        break;
-//                } else {
-//                    Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-//                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//                    roles.add(userRole);
+//                    default:
+//                        Role userRole = roleRepository.findByName(String.valueOf(ERole.ROLE_USER))
+//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//                        roles.add(userRole);
 //                }
 //            });
 //        }
@@ -138,10 +155,6 @@ public class AuthController {
                 user.getPhoneNo(),
                 roleNames));
 
-
-//        private String encodePassword(String password) {
-//        return null;
-//    }
 
         /*Use this for Post Service*/
 //    public Optional<User> getCurrentUser() {

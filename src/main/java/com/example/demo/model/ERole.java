@@ -12,6 +12,6 @@ public enum ERole {
     ROLE_USER,
     ROLE_ADMIN;
 
-   public static void setRoles(List<ERole> roles) {
-    }
+//   public static void setRoles(List<ERole> roles) {
+//    }
 }

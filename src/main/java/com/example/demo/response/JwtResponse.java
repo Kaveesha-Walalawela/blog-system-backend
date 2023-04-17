@@ -5,16 +5,12 @@ import lombok.Data;
 import java.util.List;
 
 //@Component
-//@Data
 //@AllArgsConstructor (5 constructors are already defined)
 //@NoArgsConstructor
 @Data
 public class JwtResponse {
 
-    private String password;
-    private String token;
-    private String type = "Bearer";
-    private String id;
+//    private String type = "Bearer";
     private String username;
     private String email;
     private List<String> roles;
@@ -24,8 +20,6 @@ public class JwtResponse {
 
     /* used for sign in */
     public JwtResponse(String token, String id, String username, String email, String phoneNo, List<String> roles) {
-        this.token = token;
-        this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
@@ -34,7 +28,6 @@ public class JwtResponse {
 
     /* used for sign up */
     public JwtResponse(String id, String username, String email, String phoneNo) {
-        this.id = id;
         this.username = username;
         this.email = email;
         this.phoneNo = phoneNo;

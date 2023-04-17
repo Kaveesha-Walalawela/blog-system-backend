@@ -1,14 +1,0 @@
-
-
-java:S1120"wMake this line start after 2 spaces instead of 4 in order to indent the code consistently. (Indentation level is at 2.)(æ¨ç†
-’
-java:S1120"wMake this line start after 4 spaces instead of 8 in order to indent the code consistently. (Indentation level is at 2.)(É´“ıÿÿÿÿ
-\
-java:S1106"AMove this left curly brace to the beginning of next line of code.(Ä•Äİùÿÿÿÿ
-\
-java:S1106"AMove this left curly brace to the beginning of next line of code.(ÊóÃ¥øÿÿÿÿ
-\
-java:S1106"AMove this left curly brace to the beginning of next line of code.(êı¨Óúÿÿÿÿ
-4
-java:S1451"&Add or update the header of this file.
-Q	java:S125"<This block of commented-out lines of code should be removed.(¡¥ß»
