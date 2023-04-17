@@ -1,0 +1,26 @@
+
+
+java:S1120"wMake this line start after 2 spaces instead of 4 in order to indent the code consistently. (Indentation level is at 2.)(æ¨ç†
+’
+java:S1120."wMake this line start after 4 spaces instead of 8 in order to indent the code consistently. (Indentation level is at 2.)(ğ„ªıÿÿÿÿ
+3
+java:S23841"Store a copy of "roles".(ª¢…áşÿÿÿÿ
+\
+java:S1106"AMove this left curly brace to the beginning of next line of code.(òê¼—úÿÿÿÿ
+\
+java:S1106-"AMove this left curly brace to the beginning of next line of code.(š¼‘Øûÿÿÿÿ
+4
+java:S1451"&Add or update the header of this file.
+I
+java:S2208".Explicitly import the specific classes needed.(â—‡‘şÿÿÿÿ
+D
+java:S2208".Explicitly import the specific classes needed.(¬£şç
+M
+java:S1135"2Complete the task associated to this TODO comment.(Ùü°òşÿÿÿÿ
+Q	java:S1259"<This block of commented-out lines of code should be removed.(ö¥¿Î
+f
+java:S1128"PRemove this unused import 'org.springframework.data.mongodb.core.mapping.DBRef'.(°‘íâ
+C
+java:S1128".Remove this unused import 'java.util.HashSet'.(Ê‚êX
+E
+java:S1128"*Remove this unused import 'java.util.Set'.(ö²„¤şÿÿÿÿ

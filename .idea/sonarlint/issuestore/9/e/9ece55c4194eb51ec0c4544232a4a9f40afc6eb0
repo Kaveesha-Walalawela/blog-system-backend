@@ -1,0 +1,15 @@
+
+
+java:S1120"wMake this line start after 2 spaces instead of 4 in order to indent the code consistently. (Indentation level is at 2.)( ØæÒ
+’
+java:S1120"wMake this line start after 4 spaces instead of 8 in order to indent the code consistently. (Indentation level is at 2.)(®ô×Üúÿÿÿÿ
+W
+java:S1106"AMove this left curly brace to the beginning of next line of code.(ÈÏ™Â
+W
+java:S1106"AMove this left curly brace to the beginning of next line of code.(ÌÃŸ
+4
+java:S1451"&Add or update the header of this file.
+M
+java:S2039"7Explicitly declare the visibility for "userRepository".( ØæÒ
+S
+java:S4288"=Remove this annotation and use constructor injection instead.(êæÄŞ

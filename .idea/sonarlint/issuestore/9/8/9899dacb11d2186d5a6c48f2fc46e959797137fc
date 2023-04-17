@@ -1,0 +1,40 @@
+
+’
+java:S1120"wMake this line start after 2 spaces instead of 4 in order to indent the code consistently. (Indentation level is at 2.)(ñÊ®¤ùÿÿÿÿ
+
+java:S1120""wMake this line start after 4 spaces instead of 8 in order to indent the code consistently. (Indentation level is at 2.)(ö†Œ
+’
+java:S1120+"wMake this line start after 4 spaces instead of 8 in order to indent the code consistently. (Indentation level is at 2.)(ıöÙôşÿÿÿÿ
+Œ
+java:S1120:"wMake this line start after 4 spaces instead of 8 in order to indent the code consistently. (Indentation level is at 2.)(áí”3
+
+java:S1120?"wMake this line start after 4 spaces instead of 8 in order to indent the code consistently. (Indentation level is at 2.)(ì¬åÒ
+’
+java:S1120c"wMake this line start after 4 spaces instead of 8 in order to indent the code consistently. (Indentation level is at 2.)(à’éÄÿÿÿÿÿ
+W
+java:S1106"AMove this left curly brace to the beginning of next line of code.(°ô›’
+W
+java:S1106!"AMove this left curly brace to the beginning of next line of code.(ÉË’Û
+W
+java:S1106*"AMove this left curly brace to the beginning of next line of code.(½Ş Ù
+\
+java:S11069"AMove this left curly brace to the beginning of next line of code.(¡ÚÎÉûÿÿÿÿ
+\
+java:S1106>"AMove this left curly brace to the beginning of next line of code.(ñû¶Âûÿÿÿÿ
+W
+java:S1106b"AMove this left curly brace to the beginning of next line of code.(‡Ğ
+4
+java:S1451"&Add or update the header of this file.
+R	java:S105"EReplace all tab characters in this file by sequences of white-spaces.
+V
+java:S2039";Explicitly declare the visibility for "userDetailsService".(ñÊ®¤ùÿÿÿÿ
+h
+java:S3305"RInject this field value directly into "filterChain", the only method that uses it.(†€Ú³
+x
+java:S3305"]Inject this field value directly into "authenticationProvider", the only method that uses it.(ñÊ®¤ùÿÿÿÿ
+V	java:S125&"<This block of commented-out lines of code should be removed.(­¼èÿÿÿÿÿ
+J
+java:S6212+"/Declare this local variable with "var" instead.(ıöÙôşÿÿÿÿ
+V	java:S1255"<This block of commented-out lines of code should be removed.(ı£ËÚùÿÿÿÿ
+V	java:S125D"<This block of commented-out lines of code should be removed.(¸¢˜Ïøÿÿÿÿ
+Q	java:S125h"<This block of commented-out lines of code should be removed.(ë±×¡
