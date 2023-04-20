@@ -17,7 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 
 @Configuration
-//Enable Web Security
+/*Enable Web Security*/
+/* Activate Security Module*/
 @EnableGlobalMethodSecurity(
         // securedEnabled = true,
         // jsr250Enabled = true,
@@ -63,7 +64,6 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
 //	@Override
 //	protected void configure(HttpSecurity http) throws Exception {
 //		http.cors().and().csrf().disable()
@@ -75,7 +75,9 @@ public class WebSecurityConfig {
 //
 //		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 //	}
+
 // ---------------------------------------------------------------------------------------------------------------------
+
 //    @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //        http.cors().and().csrf().disable()
@@ -104,7 +106,6 @@ public class WebSecurityConfig {
 //                .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());
-
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

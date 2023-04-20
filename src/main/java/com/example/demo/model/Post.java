@@ -1,78 +1,58 @@
-//package com.example.demo.model;
-//
-//import org.springframework.data.annotation.Id;
-//
-//import javax.persistence.*;
-//import javax.validation.constraints.NotBlank;
-//import javax.validation.constraints.NotEmpty;
-//import java.time.Instant;
-//
-//@Entity
-//@Table
-//public class Post {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//    @NotBlank
-//    @Column
-//    private String title;
-//    @Lob
+package com.example.demo.model;
+
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table
+@Getter
+@Setter
+@Data
+@Document(collection = "posts")
+@NoArgsConstructor
+public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id; //Primary KEY
+    @NotBlank
+    @Column
+    private String title;
+//    @Lob  //Specifies that a persistent property or field should be persisted as a large object to a database-supported large object type.
 //    @Column
 //    @NotEmpty
 //    private String content;
-//    @Column
-//    private Instant createdOn;
-//    @Column
-//    private Instant updatedOn;
-//    @Column
-//    @NotBlank
-//    private String username;
-//
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(String id) {
-//        this.id = Long.valueOf(id);
-//    }
-//
-//    public String getTitle() {
-//        return title;
-//    }
-//
-//    public void setTitle(String title) {
-//        this.title = title;
-//    }
-//
-//    public String getContent() {
-//        return content;
-//    }
-//
-//    public void setContent(String content) {
-//        this.content = content;
-//    }
-//
-//    public Instant getCreatedOn() {
-//        return createdOn;
-//    }
-//
-//    public void setCreatedOn(Instant createdOn) {
-//        this.createdOn = createdOn;
-//    }
-//
-//    public Instant getUpdatedOn() {
-//        return updatedOn;
-//    }
-//
-//    public void setUpdatedOn(Instant updatedOn) {
-//        this.updatedOn = updatedOn;
-//    }
-//
-//    public String getUsername() {
-//        return username;
-//    }
-//
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
-//}
+    @Column
+    private Instant createdOn;
+    @Column
+    private Instant updatedOn;
+    @Column
+    @NotBlank
+    private String username;
+
+    @Lob
+    @Column
+    @NotEmpty
+    private String content = String.valueOf(new ArrayList<>());
+    //private String posts = new ArrayList<>();
+
+    public Post(String id, String title, String content, Instant updatedOn, Instant createdOn,
+                String username) {
+        this.id = id;
+        this.title = title;
+        this.createdOn = createdOn;
+        this.updatedOn = updatedOn;
+        this.username = username;
+
+    }
+}

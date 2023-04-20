@@ -109,3 +109,27 @@ public class UserDetailsImpl implements UserDetails {
     }
 }
 
+
+
+/*
+This code is defining a custom implementation of the Spring Security UserDetails interface, which represents the
+principal object (the user) that is authenticated and authorized in a Spring Security-enabled application.
+
+The UserDetailsImpl class implements the UserDetails interface and contains the following fields:
+
+id: The unique identifier of the user.
+username: The username of the user.
+email: The email address of the user.
+phoneNo: The phone number of the user.
+password: The password of the user (which is annotated with @JsonIgnore to prevent it from being serialized to JSON).
+authorities: A collection of GrantedAuthority objects that represent the roles and permissions assigned to the user.
+The class also has a constructor that takes these fields as arguments, and a static method named build that takes a
+User object and creates a new UserDetailsImpl instance from it.
+
+The class implements several methods required by the UserDetails interface, such as getAuthorities(), getPassword(),
+getUsername(), and others. These methods provide information about the user's account and determine whether the account
+is enabled, expired, or locked.
+
+The class also overrides the equals() method to compare UserDetailsImpl objects by their ID field.
+
+ */

@@ -19,3 +19,5 @@ java:S1106"AMove this left curly brace to the beginning of next line of code.(
 java:S1451"&Add or update the header of this file.
 p
 java:S1128"URemove this unused import 'org.springframework.security.access.prepost.PreAuthorize'.(ˆ†×ùÿÿÿÿ
+Ñ
+java:S4605"³'WebController' is not reachable by @ComponentScan or @SpringBootApplication. Either move it to a package configured in @ComponentScan or update your @ComponentScan configuration.(ìË‘ê8”àâèù0

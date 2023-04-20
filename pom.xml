@@ -21,6 +21,12 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-json</artifactId>
+			<version>3.0.2</version>
+			<scope>compile</scope>
+		</dependency>
 		<!--		to add @column-->
 <!--		A JPA implementation: 1.1-->
 		<dependency>
