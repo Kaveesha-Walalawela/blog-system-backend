@@ -10,3 +10,6 @@ import java.util.Optional;
 public interface PostRepository extends MongoRepository<Post, String> {
 
 }
+
+//Post, which type of data I need to call. Mapping part
+//String, basically the primary key

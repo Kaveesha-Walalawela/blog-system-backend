@@ -19,7 +19,7 @@ import java.util.List;
 @Getter
 @Setter
 @Data
-@Document(collection = "posts")
+@Document(collection = "posts") // database collection
 @NoArgsConstructor
 public class Post {
     @Id
@@ -50,6 +50,7 @@ public class Post {
                 String username) {
         this.id = id;
         this.title = title;
+        this.content = content;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
         this.username = username;

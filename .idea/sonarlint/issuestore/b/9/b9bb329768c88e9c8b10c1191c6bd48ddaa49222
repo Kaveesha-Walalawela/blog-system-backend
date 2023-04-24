@@ -1,23 +1,0 @@
-
-
-java:S1120"wMake this line start after 2 spaces instead of 4 in order to indent the code consistently. (Indentation level is at 2.)(üø÷‘
-’
-java:S1120"wMake this line start after 4 spaces instead of 8 in order to indent the code consistently. (Indentation level is at 2.)(²¡°Ñıÿÿÿÿ
-’
-java:S1120"wMake this line start after 4 spaces instead of 8 in order to indent the code consistently. (Indentation level is at 2.)(íëÅÖşÿÿÿÿ
-’
-java:S1120"wMake this line start after 4 spaces instead of 8 in order to indent the code consistently. (Indentation level is at 2.)(¨Ÿ ¶ÿÿÿÿÿ
-W
-java:S1106"AMove this left curly brace to the beginning of next line of code.(ìË‘ê
-W
-java:S1106"AMove this left curly brace to the beginning of next line of code.(üø÷‘
-\
-java:S1106"AMove this left curly brace to the beginning of next line of code.(„–¼áûÿÿÿÿ
-W
-java:S1106"AMove this left curly brace to the beginning of next line of code.(Æîçş
-4
-java:S1451"&Add or update the header of this file.
-p
-java:S1128"URemove this unused import 'org.springframework.security.access.prepost.PreAuthorize'.(ˆ†×ùÿÿÿÿ
-Ñ
-java:S4605"³'WebController' is not reachable by @ComponentScan or @SpringBootApplication. Either move it to a package configured in @ComponentScan or update your @ComponentScan configuration.(ìË‘ê8”àâèù0
