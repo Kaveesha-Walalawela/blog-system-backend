@@ -1,17 +1,20 @@
 package com.example.demo.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-//@Component
-//@AllArgsConstructor (5 constructors are already defined)
-//@NoArgsConstructor
+@Component
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class UserResponse {
 
-    private String token;
-    private String type = "Bearer";
+   private String token;
+  //  private String type = "Bearer";
     private String username;
     private String email;
     private List<String> roles;
@@ -32,16 +35,11 @@ public class UserResponse {
     }
 
     /* used for sign up */
-    public UserResponse(String id, String username, String email, String phoneNo) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.phoneNo = phoneNo;
-    }
-
+//    public UserResponse(String id, String username, String email, String phoneNo) {
+//        this.id = id;
+//        this.username = username;
+//        this.email = email;
+//        this.phoneNo = phoneNo;
+//    }
 
 }
-
-
-
-

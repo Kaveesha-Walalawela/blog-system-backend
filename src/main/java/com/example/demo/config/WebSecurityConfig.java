@@ -35,7 +35,7 @@ public class WebSecurityConfig {
         return new AuthTokenFilter();
     }
 
-//	@Override
+    //	@Override
 //	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 //		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 //	}
@@ -49,7 +49,7 @@ public class WebSecurityConfig {
         return authProvider;
     }
 
-// @Bean
+    // @Bean
 //	@Override
 //	public AuthenticationManager authenticationManagerBean() throws Exception {
 //		return super.authenticationManagerBean();
@@ -112,6 +112,3 @@ public class WebSecurityConfig {
     }
 
 }
-
-
-

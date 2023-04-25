@@ -114,8 +114,9 @@ public class AuthController {
                 roleNames));
 
     }
-     /*Create getCurrentUser*/
-//
+
+    /*Create getCurrentUser*/
+
 //    public Optional<User> getCurrentUser() {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        System.out.println(authentication.getPrincipal());
@@ -126,4 +127,3 @@ public class AuthController {
 //    }
 
 }
-

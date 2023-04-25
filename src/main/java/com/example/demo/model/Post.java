@@ -28,7 +28,7 @@ public class Post {
     @NotBlank
     @Column
     private String title;
-//    @Lob  //Specifies that a persistent property or field should be persisted as a large object to a database-supported large object type.
+    //    @Lob  //Specifies that a persistent property or field should be persisted as a large object to a database-supported large object type.
 //    @Column
 //    @NotEmpty
 //    private String content;
@@ -46,14 +46,24 @@ public class Post {
     private String content = String.valueOf(new ArrayList<>());
     //private String posts = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private PostStatus status;
     public Post(String id, String title, String content, Instant updatedOn, Instant createdOn,
-                String username) {
+                String username, PostStatus status) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
         this.username = username;
+        this.status = status;
+    }
+    public void setStatus(PostStatus status) {
+        this.status = status;
+    }
 
+    public PostStatus getStatus() {
+        return this.status;
     }
 }

@@ -2,11 +2,14 @@ package com.example.demo.utils;
 
 import com.example.demo.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+
+import java.security.Key;
 import java.util.Date;
 
 
@@ -20,13 +23,28 @@ public class JwtUtils {
     private int jwtExpirationMs;
     public String generateJwtToken(Authentication authentication) {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-        return Jwts.builder()
+
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
+
+        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+
+        String jwt = Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setExpiration(expiryDate)
+                .signWith(key)
                 .compact();
+
+        return jwt;
     }
+//        return Jwts.builder()
+//                .setSubject((userPrincipal.getUsername()))
+//                .setIssuedAt(new Date())
+//                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+//                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+//                .compact();
+//    }
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
