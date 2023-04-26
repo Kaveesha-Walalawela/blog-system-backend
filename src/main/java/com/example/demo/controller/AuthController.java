@@ -57,16 +57,17 @@ public class AuthController {
             String jwt = jwtUtils.generateJwtToken(authentication); // token generate
 //            console.log(jwt);
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-            List<String> roles = userDetails.getAuthorities().stream()
-                    .map(item -> item.getAuthority())
-                    .collect(Collectors.toList());
+//            List<String> roles = userDetails.getAuthorities().stream()
+//                    .map(item -> item.getAuthority())
+//                    .collect(Collectors.toList());
 
-            return ResponseEntity.ok(new UserResponse(jwt,
-                    userDetails.getId(),
+            return ResponseEntity.ok(new UserResponse(userDetails.getId(),
+                    jwt,
                     userDetails.getUsername(),
                     userDetails.getEmail(),
-                    userDetails.getPhoneNo(),
-                    roles));
+//                    userDetails.getRole(),
+                    null,
+                    userDetails.getPhoneNo()));
 
         } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password", e);
@@ -101,17 +102,12 @@ public class AuthController {
 //        UserDetailsImpl registerRequest;
         userRepository.save(user);
 
-        List<String> roleNames = user.getRoles().stream()
-                .map(role -> role.toString())
-                .collect(Collectors.toList());
+//        List<String> roleNames = user.getRoles().stream()
+//                .map(role -> role.toString())
+//                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new UserResponse(
-                user.getId(),
-                user.getPassword(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPhoneNo(),
-                roleNames));
+        return ResponseEntity.ok(new UserResponse(user.getId(), null, user.getUsername(),
+                user.getEmail(), user.getRoles(), user.getPhoneNo()));
 
     }
 

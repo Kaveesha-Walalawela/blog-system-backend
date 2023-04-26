@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.ERole;
 import com.example.demo.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -107,6 +108,10 @@ public class UserDetailsImpl implements UserDetails {
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
     }
+
+//    public List<ERole> getRole() {
+//        return null;
+//    }
 }
 
 
