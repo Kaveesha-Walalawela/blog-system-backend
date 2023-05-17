@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 import com.example.demo.model.ERole;
 import com.example.demo.model.User;
 import com.example.demo.repository.RoleRepository;
@@ -10,7 +10,7 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.request.LoginRequest;
 import com.example.demo.request.SignupRequest;
 import com.example.demo.response.UserResponse;
-import com.example.demo.service.UserDetailsServiceImpl;
+//import com.example.demo.service.UserDetailsServiceImpl;
 import com.example.demo.utils.JwtUtils;
 import com.example.demo.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletResponse;
+//import javax.servlet.http.HttpServletResponse;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -47,19 +47,14 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) { //ResponseEntity is a build in class
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         try {
-
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtUtils.generateJwtToken(authentication); // token generate
-//            console.log(jwt);
+            String jwt = jwtUtils.generateJwtToken(authentication);
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-//            List<String> roles = userDetails.getAuthorities().stream()
-//                    .map(item -> item.getAuthority())
-//                    .collect(Collectors.toList());
 
             return ResponseEntity.ok(new UserResponse(userDetails.getId(),
                     jwt,
@@ -99,27 +94,9 @@ public class AuthController {
         user.setRoles(roleArray);
         user.setPhoneNo(signUpRequest.getPhoneNo());
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
-//        UserDetailsImpl registerRequest;
-        userRepository.save(user);
-
-//        List<String> roleNames = user.getRoles().stream()
-//                .map(role -> role.toString())
-//                .collect(Collectors.toList());
+        userRepository.save(user); // Save the new user to the database
 
         return ResponseEntity.ok(new UserResponse(user.getId(), null, user.getUsername(),
                 user.getEmail(), user.getRoles(), user.getPhoneNo()));
-
     }
-
-    /*Create getCurrentUser*/
-
-//    public Optional<User> getCurrentUser() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        System.out.println(authentication.getPrincipal());
-//        if (authentication == null || !authentication.isAuthenticated()) {
-//            return Optional.empty();
-//        }
-//        return Optional.of((User) authentication.getPrincipal());
-//    }
-
 }

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RestController // to make this is a controller
+@RestController
 @RequestMapping("/api/posts")
 public class PostController {
 
@@ -27,54 +27,46 @@ public class PostController {
 
     @Autowired
     PostRepository postRepository;
+
     @Autowired
     private PostService postService;
 
-    //create
     @PostMapping("/post")
     public ResponseEntity<Post> createPost(@RequestBody PostRequest postRequest) {
-        Post createdPost = postService.createPost(postRequest);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUsername = authentication.getName();
+
+        Post createdPost = postService.createPost(postRequest, loggedInUsername);
         return new ResponseEntity<>(createdPost, HttpStatus.OK);
     }
-    //getAll
-    @GetMapping("")
-    @CrossOrigin
-    public List<Post> getAllPosts()
-    {
 
+    @GetMapping("")
+    public List<Post> getAllPosts() {
         return postRepository.findAll();
     }
 
-    // posts/java (search in frontend)
     @GetMapping("/posts/{text}")
-    @CrossOrigin
-    public List<Post> search(@PathVariable String text)
-    {
+    public List<Post> search(@PathVariable String text) {
         return searchRepository.findByText(text);
     }
 
-    //getPostById
     @GetMapping("/getPostById/{id}")
-    @CrossOrigin
-    public ResponseEntity<Post> getPostsById(@PathVariable String id)
-    {
+    public ResponseEntity<Post> getPostsById(@PathVariable String id) {
         Optional<Post> postData = postRepository.findById(id);
 
-        if(postData.isPresent()){
-            return new ResponseEntity<>(postData.get(), HttpStatus.OK);
+        if (postData.isPresent()) {
+            Post post = postData.get();
+            return new ResponseEntity<>(post, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    //updatePostById
     @PutMapping("/updatePostById/{id}")
-    @CrossOrigin
-    public ResponseEntity<Post> updatePostById(@PathVariable String id, @RequestBody Post newPostData)
-    {
+    public ResponseEntity<Post> updatePostById(@PathVariable String id, @RequestBody Post newPostData) {
         Optional<Post> oldPostData = postRepository.findById(id);
 
-        if(oldPostData.isPresent()){
+        if (oldPostData.isPresent()) {
             Post updatedPostData = oldPostData.get();
             updatedPostData.setTitle(newPostData.getTitle());
             updatedPostData.setContent(newPostData.getContent());
@@ -82,69 +74,60 @@ public class PostController {
             Post createdPost = postRepository.save(updatedPostData);
             return new ResponseEntity<>(createdPost, HttpStatus.OK);
         }
+
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    //deletePostById
     @DeleteMapping("/deletePostById/{id}")
-    @CrossOrigin
-    public ResponseEntity<HttpStatus> deletePostById(@PathVariable String id)
-    {
+    public ResponseEntity<HttpStatus> deletePostById(@PathVariable String id) {
         postRepository.deleteById(id);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //acceptPostById
     @PutMapping("/acceptPostById/{id}")
-    @CrossOrigin
-    public ResponseEntity<Post> acceptPostById(@PathVariable String id)
-    {
+    public ResponseEntity<Post> acceptPostById(@PathVariable String id) {
         Optional<Post> postData = postRepository.findById(id);
 
-        if(postData.isPresent()){
+        if (postData.isPresent()) {
             Post updatedPostData = postData.get();
             updatedPostData.setStatus(PostStatus.ACCEPTED);
 
             Post createdPost = postRepository.save(updatedPostData);
             return new ResponseEntity<>(createdPost, HttpStatus.OK);
         }
+
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    //rejectPostById
     @PutMapping("/rejectPostById/{id}")
-    @CrossOrigin
-    public ResponseEntity<Post> rejectPostById(@PathVariable String id)
-    {
+    public ResponseEntity<Post> rejectPostById(@PathVariable String id) {
         Optional<Post> postData = postRepository.findById(id);
 
-        if(postData.isPresent()){
+        if (postData.isPresent()) {
             Post updatedPostData = postData.get();
             updatedPostData.setStatus(PostStatus.REJECTED);
 
             Post createdPost = postRepository.save(updatedPostData);
             return new ResponseEntity<>(createdPost, HttpStatus.OK);
         }
+
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    //deletePostById
     @DeleteMapping("/adminDeletePostById/{id}")
-    @CrossOrigin
-    public ResponseEntity<HttpStatus> adminDeletePostById(@PathVariable String id)
-    {
+    public ResponseEntity<HttpStatus> adminDeletePostById(@PathVariable String id) {
         Optional<Post> postData = postRepository.findById(id);
 
-        if(postData.isPresent()){
+        if (postData.isPresent()) {
             Post postToDelete = postData.get();
 
-            // check if user has admin privileges
-            // you can get the current user from the authentication object
+            // Check if the user has admin privileges
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String loggedInUsername = auth.getName();
 
-            if(loggedInUsername.equals(postToDelete.getUsername()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))){
+            if (loggedInUsername.equals(postToDelete.getUsername()) ||
+                    auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+
                 postRepository.deleteById(id);
                 return new ResponseEntity<>(HttpStatus.OK);
             } else {
@@ -154,7 +137,4 @@ public class PostController {
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-
-
 }

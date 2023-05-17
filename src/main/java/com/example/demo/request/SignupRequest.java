@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,6 +20,9 @@ public class SignupRequest {
     private String phoneNo;
 
     public List<ERole> getRoles() {
+        if (roles == null) {
+            return new ArrayList<>();
+        }
         return roles;
     }
 
