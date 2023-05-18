@@ -35,11 +35,14 @@ public class PostController {
     public ResponseEntity<Post> createPost(@RequestBody PostRequest postRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loggedInUsername = authentication.getName();
+        System.out.println(authentication);
 
-        Post createdPost = postService.createPost(postRequest, loggedInUsername);
+        String userId = loggedInUsername;
+
+
+        Post createdPost = postService.createPost(postRequest, userId);
         return new ResponseEntity<>(createdPost, HttpStatus.OK);
     }
-
     @GetMapping("")
     public List<Post> getAllPosts() {
         return postRepository.findAll();

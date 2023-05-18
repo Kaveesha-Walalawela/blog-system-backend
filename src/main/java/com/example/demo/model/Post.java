@@ -40,17 +40,21 @@ public class Post {
     @NotBlank
     private String username;
 
+    @Column
+    private String userId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private PostStatus status;
+
     @Lob
     @Column
     @NotEmpty
     private String content = String.valueOf(new ArrayList<>());
     //private String posts = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private PostStatus status;
     public Post(String id, String title, String content, Instant updatedOn, Instant createdOn,
-                String username, PostStatus status) {
+                String username, PostStatus status, String userId) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -58,6 +62,7 @@ public class Post {
         this.updatedOn = updatedOn;
         this.username = username;
         this.status = status;
+        this.userId = userId;
     }
     public void setStatus(PostStatus status) {
         this.status = status;

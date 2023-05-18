@@ -36,6 +36,11 @@ public class User {
     @Column
     private String phoneNo;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+
 //    @DBRef
     private List<ERole> roles = new ArrayList<>();
     public User(String username, String email, String password, List<ERole> roles, String phoneNo) {
@@ -44,6 +49,9 @@ public class User {
         this.password = password;
         this.roles = roles;
         this.phoneNo = phoneNo;
+    }
+    public String getId() {
+        return id;
     }
 }
 
