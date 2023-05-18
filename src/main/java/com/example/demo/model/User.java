@@ -23,7 +23,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id; //Primary KEY
     @NotBlank
-    @Column
+    @Column (unique = true)
     private String username;
     @NotBlank
     @Email
