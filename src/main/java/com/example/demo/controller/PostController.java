@@ -2,8 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Post;
 import com.example.demo.model.PostStatus;
+import com.example.demo.model.User;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.repository.SearchRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.request.PostRequest;
 import com.example.demo.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @PostMapping("/post")
     public ResponseEntity<Post> createPost(@RequestBody PostRequest postRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -52,6 +57,20 @@ public class PostController {
     public List<Post> search(@PathVariable String text) {
         return searchRepository.findByText(text);
     }
+
+
+    @GetMapping("/getPostByUsername/{username}")
+    public ResponseEntity<List<Post>> getPostsByUsername(@PathVariable String username) {
+        List<Post> posts = postRepository.findByUsername(username);
+
+        if (!posts.isEmpty()) {
+            return new ResponseEntity<>(posts, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
 
     @GetMapping("/getPostById/{id}")
     public ResponseEntity<Post> getPostsById(@PathVariable String id) {
