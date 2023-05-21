@@ -45,7 +45,7 @@ public class PostController {
         String userId = loggedInUsername;
 
         Post createdPost;
-        if (postRequest.getStatus().equalsIgnoreCase("draft")) {
+        if (postRequest.getStatus() != null && postRequest.getStatus().equalsIgnoreCase("draft")) {
             createdPost = postService.createDraftPost(postRequest, userId);
         } else {
             createdPost = postService.createPost(postRequest, userId);
