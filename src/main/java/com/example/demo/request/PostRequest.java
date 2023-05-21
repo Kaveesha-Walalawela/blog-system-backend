@@ -16,4 +16,11 @@ public class PostRequest {
     private String title;
     private String username;
 
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+
 }

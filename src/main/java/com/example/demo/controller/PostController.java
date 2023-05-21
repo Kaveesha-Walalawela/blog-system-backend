@@ -44,10 +44,16 @@ public class PostController {
 
         String userId = loggedInUsername;
 
+        Post createdPost;
+        if (postRequest.getStatus().equalsIgnoreCase("draft")) {
+            createdPost = postService.createDraftPost(postRequest, userId);
+        } else {
+            createdPost = postService.createPost(postRequest, userId);
+        }
 
-        Post createdPost = postService.createPost(postRequest, userId);
         return new ResponseEntity<>(createdPost, HttpStatus.OK);
     }
+
     @GetMapping("")
     public List<Post> getAllPosts() {
         return postRepository.findAll();

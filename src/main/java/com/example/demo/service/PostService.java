@@ -37,4 +37,16 @@ public class PostService {
         return postRepository.save(blogPost);
     }
 
+    public Post createDraftPost(PostRequest postRequest, String userId) {
+        User currentUser = userRepository.findByUsername(postRequest.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+
+        Post blogPost = new Post();
+        blogPost.setTitle(postRequest.getTitle());
+        blogPost.setContent(postRequest.getContent());
+        blogPost.setUsername(currentUser.getUsername());
+        blogPost.setStatus(PostStatus.DRAFT); // Set the status as "DRAFT"
+        return postRepository.save(blogPost);
+    }
+
 }
