@@ -165,4 +165,27 @@ public class PostController {
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping("/sharePostById/{id}")
+    public ResponseEntity<Post> sharePostById(@PathVariable String id) {
+        Optional<Post> postData = postRepository.findById(id);
+
+        if (postData.isPresent()) {
+            Post updatedPostData = postData.get();
+            updatedPostData.setStatus(PostStatus.PENDING);
+
+            Post sharedPost = postRepository.save(updatedPostData);
+            return new ResponseEntity<>(sharedPost, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/drafts")
+    public ResponseEntity<List<Post>> getDraftPosts() {
+        List<Post> draftPosts = postRepository.findByStatus(PostStatus.DRAFT);
+        return new ResponseEntity<>(draftPosts, HttpStatus.OK);
+    }
+
+
 }
