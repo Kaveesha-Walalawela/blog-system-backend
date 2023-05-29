@@ -101,50 +101,50 @@ public class AuthController {
                 user.getEmail(), user.getRoles(), user.getPhoneNo()));
     }
 
-    @PutMapping("/update-profile/{userId}")
-    public ResponseEntity<?> updateUserProfile(@PathVariable String userId, @RequestBody UserRequest userRequest) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (!(authentication.getPrincipal() instanceof UserDetailsImpl)) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized to update the profile");
-            }
 
-            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-            User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
 
-            // Only allow the authenticated user to update their own profile
-            if (!userId.equals(userDetails.getId())) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized to update the profile");
-            }
-
-            // Validate input data
-            if (userRequest.getUsername() != null && !userRequest.getUsername().isEmpty()) {
-                user.setUsername(userRequest.getUsername());
-            }
-            if (userRequest.getEmail() != null && !userRequest.getEmail().isEmpty()) {
-                // Perform email validation if required
-                user.setEmail(userRequest.getEmail());
-            }
-            if (userRequest.getPhoneNo() != null && !userRequest.getPhoneNo().isEmpty()) {
-                user.setPhoneNo(userRequest.getPhoneNo());
-            }
-
-            User updatedUser = userRepository.save(user); // Save the updated user details
-
-            // Create a new response object with the updated user details
-            UserResponse response = new UserResponse(updatedUser.getId(), null, updatedUser.getUsername(),
-                    updatedUser.getEmail(), updatedUser.getRoles(), updatedUser.getPhoneNo());
-
-            return ResponseEntity.ok(response);
-        } catch (ResponseStatusException e) {
-            throw e; // Rethrow the existing response status exceptions
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error updating user details", e);
+    @GetMapping("/{userid}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
+    @PutMapping("/adminUpdateUserById/{id}")
+    public ResponseEntity<User> updateUserById(@PathVariable("id") String id, @RequestBody User updatedUser) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setUsername(updatedUser.getUsername());
+            user.setEmail(updatedUser.getEmail());
+            user.setRoles(updatedUser.getRoles());
+            user.setPhoneNo(updatedUser.getPhoneNo());
+            User savedUser = userRepository.save(user);
+            return new ResponseEntity<>(savedUser, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
+    @DeleteMapping("/adminDeleteUserById/{id}")
+    public ResponseEntity<HttpStatus> deleteUserById(@PathVariable("id") String id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            userRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 }
