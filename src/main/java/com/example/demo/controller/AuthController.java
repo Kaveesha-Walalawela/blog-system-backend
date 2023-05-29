@@ -184,4 +184,19 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/userWarnings")
+    public ResponseEntity<List<Map<String, Object>>> getUserWarnings() {
+        List<User> users = userRepository.findAll();
+        List<Map<String, Object>> userWarnings = new ArrayList<>();
+
+        for (User user : users) {
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("username", user.getUsername());
+            userData.put("warnings", user.getWarnings());
+            userWarnings.add(userData);
+        }
+
+        return ResponseEntity.ok(userWarnings);
+    }
+
 }
