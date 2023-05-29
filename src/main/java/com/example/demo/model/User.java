@@ -36,6 +36,10 @@ public class User {
     @Column
     private String phoneNo;
 
+    @Column
+    private int warnings;
+
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

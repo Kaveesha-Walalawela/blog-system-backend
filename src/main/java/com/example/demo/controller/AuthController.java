@@ -146,5 +146,42 @@ public class AuthController {
         }
     }
 
+//    @PutMapping("/adminWarningUser/{id}")
+//    public ResponseEntity<User> warningUserById(@PathVariable("id") String id) {
+//        Optional<User> userOptional = userRepository.findById(id);
+//        if (userOptional.isPresent()) {
+//
+//            User user = userOptional.get();
+//            String currentWarningsStr = user.getWarnings();
+//            System.out.println("currentWarningsStr"+currentWarningsStr);
+//            int currentWarnings = Integer.parseInt(currentWarningsStr);
+//            System.out.println("currentWarnings"+currentWarnings);
+//            user.setWarnings(String.valueOf(currentWarnings + 1));
+//            User savedUser = userRepository.save(user);
+//            System.out.println("user"+user);
+//            return new ResponseEntity<>(savedUser, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
+
+    @PutMapping("/adminWarningUser/{id}")
+    public ResponseEntity<User> warningUserById(@PathVariable("id") String id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+
+            User user = userOptional.get();
+            int currentWarnings = user.getWarnings();
+            System.out.println("currentWarningsStr"+currentWarnings);
+          //  int currentWarnings = Integer.parseInt(currentWarningsStr);
+           // System.out.println("currentWarnings"+currentWarnings);
+            user.setWarnings(currentWarnings + 1);
+            User savedUser = userRepository.save(user);
+            System.out.println("user"+user);
+            return new ResponseEntity<>(savedUser, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 }
