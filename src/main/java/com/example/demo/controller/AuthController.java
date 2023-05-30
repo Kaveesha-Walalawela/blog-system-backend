@@ -119,7 +119,7 @@ public class AuthController {
         }
     }
 
-    @PutMapping("/adminUpdateUserById/{id}")
+    @PutMapping("/updateProfileByUserId/{id}")
     public ResponseEntity<User> updateUserById(@PathVariable("id") String id, @RequestBody User updatedUser) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
@@ -128,6 +128,7 @@ public class AuthController {
             user.setEmail(updatedUser.getEmail());
             user.setRoles(updatedUser.getRoles());
             user.setPhoneNo(updatedUser.getPhoneNo());
+            user.setWarnings(updatedUser.getWarnings());
             User savedUser = userRepository.save(user);
             return new ResponseEntity<>(savedUser, HttpStatus.OK);
         } else {
@@ -198,5 +199,20 @@ public class AuthController {
 
         return ResponseEntity.ok(userWarnings);
     }
+
+
+    //for users who has more than 5 warnings
+
+    @DeleteMapping("/adminDeleteUserByUsername/{username}")
+    public ResponseEntity<HttpStatus> deleteUserByUsername(@PathVariable("username") String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            userRepository.delete(userOptional.get());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 }
