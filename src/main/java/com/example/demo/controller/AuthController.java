@@ -5,11 +5,12 @@ import java.util.*;
 //import java.util.stream.Collectors;
 import com.example.demo.model.ERole;
 import com.example.demo.model.User;
-import com.example.demo.repository.RoleRepository;
+//import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.request.LoginRequest;
 import com.example.demo.request.SignupRequest;
 import com.example.demo.request.UserRequest;
+import com.example.demo.response.LoginResponse;
 import com.example.demo.response.UserResponse;
 //import com.example.demo.service.UserDetailsServiceImpl;
 import com.example.demo.utils.JwtUtils;
@@ -38,8 +39,8 @@ public class AuthController {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    RoleRepository roleRepository;
+//    @Autowired
+//    RoleRepository roleRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -48,7 +49,7 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public LoginResponse authenticateUser(@RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -57,13 +58,31 @@ public class AuthController {
             String jwt = jwtUtils.generateJwtToken(authentication);
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-            return ResponseEntity.ok(new UserResponse(userDetails.getId(),
-                    jwt,
-                    userDetails.getUsername(),
-                    userDetails.getEmail(),
-//                    userDetails.getRole(),
-                    null,
-                    userDetails.getPhoneNo()));
+                //get user from DB
+                Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
+
+                //set user roles to a list from user retrieved from DB
+                List<ERole> role = user.get().getRoles();
+
+                //create a new LoginResponse object with the generated token and role list
+                LoginResponse loginResponse = new LoginResponse();
+                loginResponse.setToken(jwt);
+                loginResponse.setRoles(role);
+                loginResponse.setId(user.get().getId());
+                loginResponse.setUsername(user.get().getUsername());
+                loginResponse.setEmail(user.get().getEmail());
+                loginResponse.setPhoneNo(user.get().getPhoneNo());
+                return loginResponse;
+
+
+//            return ResponseEntity.ok(new UserResponse(userDetails.getId(),
+//                    jwt,
+//                    userDetails.getUsername(),
+//                    userDetails.getEmail(),
+//                    Collections.singletonList(userDetails.getRole()),
+////                    userDetails.getRole(),
+////                    null,
+//                    userDetails.getPhoneNo()));
 
         } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password", e);
@@ -97,7 +116,7 @@ public class AuthController {
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
         userRepository.save(user); // Save the new user to the database
 
-        return ResponseEntity.ok(new UserResponse(user.getId(), null, user.getUsername(),
+        return ResponseEntity.ok(new UserResponse(user.getId(), user.getUsername(),
                 user.getEmail(), user.getRoles(), user.getPhoneNo()));
     }
 
@@ -174,8 +193,8 @@ public class AuthController {
             User user = userOptional.get();
             int currentWarnings = user.getWarnings();
             System.out.println("currentWarningsStr"+currentWarnings);
-          //  int currentWarnings = Integer.parseInt(currentWarningsStr);
-           // System.out.println("currentWarnings"+currentWarnings);
+            //  int currentWarnings = Integer.parseInt(currentWarningsStr);
+            // System.out.println("currentWarnings"+currentWarnings);
             user.setWarnings(currentWarnings + 1);
             User savedUser = userRepository.save(user);
             System.out.println("user"+user);
