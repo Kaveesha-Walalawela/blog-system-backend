@@ -58,21 +58,21 @@ public class AuthController {
             String jwt = jwtUtils.generateJwtToken(authentication);
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-                //get user from DB
-                Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
+            //get user from DB
+            Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
 
-                //set user roles to a list from user retrieved from DB
-                List<ERole> role = user.get().getRoles();
+            //set user roles to a list from user retrieved from DB
+            List<ERole> role = user.get().getRoles();
 
-                //create a new LoginResponse object with the generated token and role list
-                LoginResponse loginResponse = new LoginResponse();
-                loginResponse.setToken(jwt);
-                loginResponse.setRoles(role);
-                loginResponse.setId(user.get().getId());
-                loginResponse.setUsername(user.get().getUsername());
-                loginResponse.setEmail(user.get().getEmail());
-                loginResponse.setPhoneNo(user.get().getPhoneNo());
-                return loginResponse;
+            //create a new LoginResponse object with the generated token and role list
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setToken(jwt);
+            loginResponse.setRoles(role);
+            loginResponse.setId(user.get().getId());
+            loginResponse.setUsername(user.get().getUsername());
+            loginResponse.setEmail(user.get().getEmail());
+            loginResponse.setPhoneNo(user.get().getPhoneNo());
+            return loginResponse;
 
 
 //            return ResponseEntity.ok(new UserResponse(userDetails.getId(),
@@ -218,6 +218,19 @@ public class AuthController {
 
         return ResponseEntity.ok(userWarnings);
     }
+
+    @GetMapping("/userWarningsCount/{username}")
+    public ResponseEntity<Integer> getUserWarningsCount(@PathVariable("username") String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            int warningsCount = user.getWarnings();
+            return ResponseEntity.ok(warningsCount);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 
     //for users who has more than 5 warnings
