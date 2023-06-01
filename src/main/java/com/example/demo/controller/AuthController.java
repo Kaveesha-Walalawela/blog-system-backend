@@ -8,6 +8,7 @@ import com.example.demo.model.User;
 //import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.request.LoginRequest;
+import com.example.demo.request.ResetPasswordRequest;
 import com.example.demo.request.SignupRequest;
 import com.example.demo.request.UserRequest;
 import com.example.demo.response.LoginResponse;
@@ -15,6 +16,7 @@ import com.example.demo.response.UserResponse;
 //import com.example.demo.service.UserDetailsServiceImpl;
 import com.example.demo.utils.JwtUtils;
 import com.example.demo.service.UserDetailsImpl;
+import com.example.demo.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -111,7 +113,7 @@ public class AuthController {
         User user = new User();
         user.setUsername(signUpRequest.getUsername());
         user.setEmail(signUpRequest.getEmail());
-        user.setRoles(roleArray);
+        user.setRoles(List.of(ERole.ROLE_USER));
         user.setPhoneNo(signUpRequest.getPhoneNo());
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
         userRepository.save(user); // Save the new user to the database
@@ -192,12 +194,12 @@ public class AuthController {
 
             User user = userOptional.get();
             int currentWarnings = user.getWarnings();
-            System.out.println("currentWarningsStr"+currentWarnings);
+            System.out.println("currentWarningsStr" + currentWarnings);
             //  int currentWarnings = Integer.parseInt(currentWarningsStr);
             // System.out.println("currentWarnings"+currentWarnings);
             user.setWarnings(currentWarnings + 1);
             User savedUser = userRepository.save(user);
-            System.out.println("user"+user);
+            System.out.println("user" + user);
             return new ResponseEntity<>(savedUser, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -232,7 +234,6 @@ public class AuthController {
     }
 
 
-
     //for users who has more than 5 warnings
 
     @DeleteMapping("/adminDeleteUserByUsername/{username}")
@@ -247,4 +248,23 @@ public class AuthController {
     }
 
 
-}
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PutMapping("/reset-password")
+        public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
+            Optional<User> userOptional = userRepository.findByUsername(resetPasswordRequest.getUsername());
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                // Hash the new password
+                String hashedNewPassword = PasswordUtils.hashPassword(resetPasswordRequest.getNewPassword());
+
+                // Set the new hashed password for the user
+                user.setPassword(hashedNewPassword);
+                userRepository.save(user);
+
+                return ResponseEntity.ok("Password reset successful");
+            } else {
+                return ResponseEntity.badRequest().body("User not found");
+            }
+        }
+
+    }
