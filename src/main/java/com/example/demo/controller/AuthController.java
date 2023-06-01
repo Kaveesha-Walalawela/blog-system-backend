@@ -4,8 +4,10 @@ package com.example.demo.controller;
 import java.util.*;
 //import java.util.stream.Collectors;
 import com.example.demo.model.ERole;
+import com.example.demo.model.Post;
 import com.example.demo.model.User;
 //import com.example.demo.repository.RoleRepository;
+import com.example.demo.repository.PostRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.request.LoginRequest;
 import com.example.demo.request.ResetPasswordRequest;
@@ -49,6 +51,9 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @PostMapping("/signin")
     public LoginResponse authenticateUser(@RequestBody LoginRequest loginRequest) {
@@ -162,6 +167,9 @@ public class AuthController {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             userRepository.deleteById(id);
+            String userName = userOptional.get().getUsername();
+            List<Post> userPosts = postRepository.findByUsername(userName);
+            postRepository.deleteAll(userPosts);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -240,7 +248,14 @@ public class AuthController {
     public ResponseEntity<HttpStatus> deleteUserByUsername(@PathVariable("username") String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (userOptional.isPresent()) {
-            userRepository.delete(userOptional.get());
+            User user = userOptional.get();
+
+            // Delete all the posts associated with the user
+            List<Post> userPosts = postRepository.findByUsername(username);
+            postRepository.deleteAll(userPosts);
+
+            userRepository.delete(user); // Delete the user
+
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -248,23 +263,24 @@ public class AuthController {
     }
 
 
+
     @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/reset-password")
-        public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
-            Optional<User> userOptional = userRepository.findByUsername(resetPasswordRequest.getUsername());
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-                // Hash the new password
-                String hashedNewPassword = PasswordUtils.hashPassword(resetPasswordRequest.getNewPassword());
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
+        Optional<User> userOptional = userRepository.findByUsername(resetPasswordRequest.getUsername());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            // Hash the new password
+            String hashedNewPassword = PasswordUtils.hashPassword(resetPasswordRequest.getNewPassword());
 
-                // Set the new hashed password for the user
-                user.setPassword(hashedNewPassword);
-                userRepository.save(user);
+            // Set the new hashed password for the user
+            user.setPassword(hashedNewPassword);
+            userRepository.save(user);
 
-                return ResponseEntity.ok("Password reset successful");
-            } else {
-                return ResponseEntity.badRequest().body("User not found");
-            }
+            return ResponseEntity.ok("Password reset successful");
+        } else {
+            return ResponseEntity.badRequest().body("User not found");
         }
-
     }
+
+}
