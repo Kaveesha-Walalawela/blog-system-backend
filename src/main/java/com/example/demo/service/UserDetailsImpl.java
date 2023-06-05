@@ -77,7 +77,7 @@ public class UserDetailsImpl implements UserDetails {
         return username;
     }
 
-    //    @Override
+
     public String getPhoneNo() {
         return phoneNo;
     }
@@ -111,12 +111,6 @@ public class UserDetailsImpl implements UserDetails {
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
     }
-
-//    public Role getRole() {
-//
-//        return name;
-//
-//    }
 }
 
 

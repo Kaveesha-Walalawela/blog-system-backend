@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalTime;
 import java.util.Optional;
 
 @Service
@@ -36,6 +38,8 @@ public class PostService {
         blogPost.setContent(postRequest.getContent());
         blogPost.setUsername(currentUser.getUsername());
         blogPost.setStatus(PostStatus.PENDING);
+        blogPost.setCreatedOn(Instant.now());
+        blogPost.setCreatedTime(LocalTime.now().now());
         return postRepository.save(blogPost);
     }
 

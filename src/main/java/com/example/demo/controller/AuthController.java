@@ -1,21 +1,16 @@
 package com.example.demo.controller;
 
-//import java.io.IOException;
 import java.util.*;
-//import java.util.stream.Collectors;
 import com.example.demo.model.ERole;
 import com.example.demo.model.Post;
 import com.example.demo.model.User;
-//import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.request.LoginRequest;
 import com.example.demo.request.ResetPasswordRequest;
 import com.example.demo.request.SignupRequest;
-import com.example.demo.request.UserRequest;
 import com.example.demo.response.LoginResponse;
 import com.example.demo.response.UserResponse;
-//import com.example.demo.service.UserDetailsServiceImpl;
 import com.example.demo.utils.JwtUtils;
 import com.example.demo.service.UserDetailsImpl;
 import com.example.demo.utils.PasswordUtils;
@@ -31,8 +26,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-//import javax.servlet.http.HttpServletResponse;
-
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("api/auth")
@@ -42,9 +35,6 @@ public class AuthController {
 
     @Autowired
     UserRepository userRepository;
-
-//    @Autowired
-//    RoleRepository roleRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -80,16 +70,6 @@ public class AuthController {
             loginResponse.setEmail(user.get().getEmail());
             loginResponse.setPhoneNo(user.get().getPhoneNo());
             return loginResponse;
-
-
-//            return ResponseEntity.ok(new UserResponse(userDetails.getId(),
-//                    jwt,
-//                    userDetails.getUsername(),
-//                    userDetails.getEmail(),
-//                    Collections.singletonList(userDetails.getRole()),
-////                    userDetails.getRole(),
-////                    null,
-//                    userDetails.getPhoneNo()));
 
         } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password", e);
@@ -175,25 +155,6 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-//    @PutMapping("/adminWarningUser/{id}")
-//    public ResponseEntity<User> warningUserById(@PathVariable("id") String id) {
-//        Optional<User> userOptional = userRepository.findById(id);
-//        if (userOptional.isPresent()) {
-//
-//            User user = userOptional.get();
-//            String currentWarningsStr = user.getWarnings();
-//            System.out.println("currentWarningsStr"+currentWarningsStr);
-//            int currentWarnings = Integer.parseInt(currentWarningsStr);
-//            System.out.println("currentWarnings"+currentWarnings);
-//            user.setWarnings(String.valueOf(currentWarnings + 1));
-//            User savedUser = userRepository.save(user);
-//            System.out.println("user"+user);
-//            return new ResponseEntity<>(savedUser, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
 
     @PutMapping("/adminWarningUser/{id}")
     public ResponseEntity<User> warningUserById(@PathVariable("id") String id) {

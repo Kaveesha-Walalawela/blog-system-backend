@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,10 @@ public class Post {
 //    private String content;
     @Column
     private Instant createdOn;
+
+    @Column
+    private LocalTime createdTime;
+
     @Column
     private Instant updatedOn;
     @Column
@@ -63,6 +68,7 @@ public class Post {
         this.username = username;
         this.status = status;
         this.userId = userId;
+        this.createdTime = createdTime;
     }
     public void setStatus(PostStatus status) {
         this.status = status;
@@ -71,4 +77,21 @@ public class Post {
     public PostStatus getStatus() {
         return this.status;
     }
+
+    public Instant getCreatedOn() {
+        return this.createdOn;
+    }
+
+    public void setCreatedOn(Instant createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public LocalTime getCreatedTime() {
+        return this.createdTime;
+    }
+
+    public void setCreatedTime(LocalTime createdTime) {
+        this.createdTime = createdTime;
+    }
+
 }
